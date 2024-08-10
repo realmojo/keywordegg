@@ -33,6 +33,10 @@ export default defineNuxtConfig({
           src: 'https://t1.kakaocdn.net/kakao_js_sdk/v1/kakao.min.js',
           defer: true,
         },
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-7EZ2L6DWZK',
+          async: true,
+        },
         // {
         //   src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9130836798889522",
         //   crossorigin: "anonymous",
@@ -57,6 +61,11 @@ export default defineNuxtConfig({
         //     '!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)}; if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0"; n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s)}(window, document,"script", "https://connect.facebook.net/en_US/fbevents.js"); fbq("init", "348659884918044"); fbq("track", "PageView");',
         //   type: 'text/javascript',
         // },
+        {
+          innerHTML:
+            "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-7EZ2L6DWZK');",
+          type: 'text/javascript',
+        },
       ],
       link: [
         {
@@ -99,7 +108,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:url',
-          content: 'https://mindpang.com',
+          content: 'https://keywordegg.com',
         },
         {
           property: 'og:article:author',
@@ -123,7 +132,7 @@ export default defineNuxtConfig({
         },
         {
           name: 'twitter:site',
-          content: '@mindpang.com',
+          content: '@keywordegg.com',
         },
         {
           name: 'twitter:title',

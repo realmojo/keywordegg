@@ -1,7 +1,8 @@
 <template>
   <main class="site-layout px-2">
     <div class="text-cetner">
-      <Button @click="kakaoLogin()"> 카톡 로그인 </Button>
+      <Button @click="loginWithNaver()">네이버 로그인</Button>
+      <Button @click="kakaoLogin()">카톡 로그인</Button>
     </div>
   </main>
 </template>
@@ -10,6 +11,16 @@
 import axios from 'axios';
 const route = useRoute();
 const runtimeConfig = useRuntimeConfig();
+
+const loginWithNaver = () => {
+  const naverLogin = new naver.LoginWithNaverId({
+    clientId: 'wz_qdUgaXrVHxw9Zktgt', // Naver client key
+    callbackUrl: `${window.location.origin}/login/callback`,
+    callbackHandle: true,
+  });
+  naverLogin.init();
+  naverLogin.reprompt();
+};
 
 const kakaoLogin = () => {
   console.log(window.Kakao);

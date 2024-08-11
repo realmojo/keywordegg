@@ -1,0 +1,21 @@
+{
+  "name": "Keyword Egg",
+  "description": "키워드에그 네이버 검색어 수집기",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_icon": "keywordegg.png",
+    "default_popup": "index.html",
+    "default_title": "Keyword Egg"
+  },
+  "icons": {
+    "128": "keywordegg.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["index.js"]
+    }
+  ],
+  "permissions": ["storage", "scripting"]
+}

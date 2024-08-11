@@ -37,6 +37,10 @@ export default defineNuxtConfig({
           src: 'https://www.googletagmanager.com/gtag/js?id=G-7EZ2L6DWZK',
           async: true,
         },
+        {
+          src: 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js',
+          charset: 'utf-8',
+        },
         // {
         //   src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9130836798889522",
         //   crossorigin: "anonymous",

@@ -3,7 +3,6 @@ const description =
   '최신 키워드 트렌드와 통계 정보를 손쉽게 확인할 수 있는 웹사이트입니다. 인기 검색어, 트렌드 분석, 경쟁 키워드 조사 등 다양한 데이터를 한눈에 파악할 수 있으며, 사용자 맞춤형 키워드 추천 기능도 제공하여 효과적인 마케팅 전략 수립에 도움을 드립니다. 검색 엔진 최적화(SEO), 콘텐츠 마케팅, 광고 캠페인 등 다양한 분야에서 필요한 핵심 키워드를 간편하게 조회하고 분석하세요.';
 const logo = '/logo.png';
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {

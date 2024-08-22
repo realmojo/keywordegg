@@ -1,8 +1,13 @@
 <template>
   <main class="site-layout px-2">
-    <div class="text-cetner">
-      <Button @click="loginWithNaver()">네이버 로그인</Button>
-      <Button @click="kakaoLogin()">카톡 로그인</Button>
+    <div class="text-cetner pt-8">
+      로그인을 하면 추후 본인 것만 조회할 수 있도록 개발 예정~~~ ^.^
+
+      <NuxtLink to="/">
+        <Button>홈으로 가기</Button>
+      </NuxtLink>
+      <!-- <Button @click="loginWithNaver()">네이버 로그인</Button>
+      <Button @click="kakaoLogin()">카톡 로그인</Button> -->
     </div>
   </main>
 </template>

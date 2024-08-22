@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <main>
+    <main class="container flex justify-center max-w-screen-2xl">
       <slot />
     </main>
     <Footer />

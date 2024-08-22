@@ -4,13 +4,13 @@
   >
     <div class="container flex h-14 max-w-screen-2xl items-center">
       <div class="mr-4 md:mr-1 hidden md:flex">
-        <NuxtLink
-          to="/"
+        <a
+          href="/"
           class="mr-4 md:mr-2 lg:mr-6 flex items-center lg:space-x1 xl:space-x-2"
         >
           <img src="/main-logo.png" style="width: 40px; height: 40px" />
           <span class="font-bold"> 키워드에그 </span>
-        </NuxtLink>
+        </a>
         <nav
           class="flex items-center max-lg:space-x-4 space-x-6 text-sm font-medium"
         >
@@ -50,7 +50,7 @@
       <div
         class="flex flex-1 items-center justify-between space-x-2 md:justify-end"
       >
-        <div class="relative w-full max-w-sm items-center">
+        <!-- <div class="relative w-full max-w-sm items-center">
           <Input
             id="search"
             type="text"
@@ -63,7 +63,7 @@
           >
             <Search class="size-6 text-muted-foreground" />
           </span>
-        </div>
+        </div> -->
 
         <nav class="flex items-center">
           <Button @click="toggleTheme()" variant="ghost" size="icon">
@@ -100,12 +100,6 @@ import { Search } from 'lucide-vue-next';
 import { Input } from '@/components/ui/input';
 
 const colorMode = useColorMode();
-
-const keyword = ref('');
-
-const doSearch = () => {
-  console.log(keyword.value);
-};
 
 const toggleTheme = () => {
   colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark';

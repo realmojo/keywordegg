@@ -127,14 +127,15 @@
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="(item, index) in items" key="index">
-          <TableCell class="hover:underline font-bold text-emerald-400"
-            ><a
+        <TableRow v-for="(item, index) in items" :key="index">
+          <TableCell class="hover:underline font-bold text-emerald-400">
+            <!-- <a
               :href="`https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${encodeURIComponent(item.keyword)}`"
               target="_blank"
               >{{ item.keyword }}</a
-            ></TableCell
-          >
+            > -->
+            <NuxtLink :to="`/stat/${item.keyword}`">{{ item.keyword }}</NuxtLink>
+          </TableCell>
           <TableCell>{{ formatNumberWithCommas(item.pc) }}</TableCell>
           <TableCell>{{ formatNumberWithCommas(item.mobile) }}</TableCell>
           <TableCell class="font-bold">{{

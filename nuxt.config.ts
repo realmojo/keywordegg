@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // API_URL: process.env.KEYWORDEGG_API_URL,
-      API_URL: 'https://f5game-bot.herokuapp.com',
+      API_URL: 'https://api.keywordegg.com',
     },
   },
   compatibilityDate: '2024-04-03',

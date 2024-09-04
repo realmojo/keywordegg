@@ -14,6 +14,27 @@ const getKeywords = async (keyword) => {
   }
 };
 
+const getAnalysisBlogInfo = async(urls) => {
+  try {
+    const url = 'https://api.keywordegg.com/keywordegg/getBlogAnalysisInfo'
+    const response = await fetch(
+     url,{
+      method: 'POST', // POST 메서드 사용
+      headers: {
+        'Content-Type': 'application/json', // JSON 데이터 전송을 위해 헤더 설정
+      },
+      body: JSON.stringify({urls}), // 데이터를 JSON 문자열로 변환하여 body에 담음
+    });
+    if (response.ok) {
+      return response.json();
+    } else {
+      return '';
+    }
+
+  } catch (e) {
+    return 'error'
+  }
+}
 
 const setPreviewHtml = (keyword) => {
   const keywordEggLinkHtml =
@@ -43,7 +64,7 @@ const setLiHtml = (items) => {
 
   for (const item of items) {
     const url = `https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${encodeURIComponent(item.keyword)}`;
-    liHtml += `<tr><td style="padding: 3px 0;"><a href="${url}" style="color: #55a13b">${item.keyword}</a></td><td>${item.pc}</td><td>${item.mobile}</td><td>${item.mobileCtr}</td></tr>`;
+    liHtml += `<tr><td style="padding: 3px 0;"><a href="${url}" style="color: #55a13b">${item.keyword}</a></td><td>${item.pc.toLocaleString()}</td><td>${item.mobile.toLocaleString()}</td><td>${item.mobileCtr}</td></tr>`;
   }
 
   let html = `<div style="padding: 10px 19px 16px"><table style="width: 100%;"><tbody>${liHtml}</tbody></table></div>`;
@@ -59,23 +80,123 @@ const setHtml = (items) => {
 const setErrorHtml = () => {
   document
     .getElementById('keyword-egg-list')
-    .innerHTML = '<div>일시적으로 오류가 발생 하였습니다.</div>';
+    .innerHTML = '<div style="padding: 10px; text-align: center;">일시적으로 오류가 발생 하였습니다.</div>';
 }
 
 const run = async () => {
   const url = location.href;
-  if (url.indexOf('https://search.naver.com/search.naver') !== -1) {
-    const keyword = document.getElementsByName('oquery')[0].value;
-    setPreviewHtml(keyword);
-    const items = await getKeywords(keyword);
 
-    if (items === 'error') {
-      setErrorHtml();
-    } else if (items.items.length > 0) {
-      const d = items.items.slice(0, 50);
-      setHtml(d);
-    }
+  if (url.indexOf('https://search.naver.com/search.naver') !== -1) {
+    // 검색어 수 가져오기
+    setTimeout(async () => {
+      const keyword = document.getElementsByName('oquery')[0].value;
+      setPreviewHtml(keyword);
+      const items = await getKeywords(keyword);
+  
+      if (items === 'error') {
+        setErrorHtml();
+      } else if (items.items.length > 0) {
+        const d = items.items.slice(0, 50);
+        setHtml(d);
+      }
+    }, 1)
+
+    setTimeout(async () => {
+      // 블로그 정보 가져오기
+      let urls = [];
+      let results = [];
+
+      //
+      const a = document.querySelectorAll('.fds-comps-right-image-text-title');
+      a.forEach(item => {
+        const fds = item.closest('.fds-ugc-block-mod');
+        if (fds) {
+          // .view_wrap 내부의 .user_box 요소 찾기
+          let _keep_wrap = fds.querySelector('._keep_wrap');
+          let afterElement = _keep_wrap ? _keep_wrap.querySelector('.fds-thumb-simple-group') : null;
+          
+          // 인플루언서 영역
+          if (!afterElement) {
+            afterElement = _keep_wrap ? _keep_wrap.querySelector('.fds-info-sub-inner-box') : null;
+          }
+          // 결과 출력
+          afterElement.
+          results.push({type: 'fds', element: afterElement })
+        }
+        urls.push(item.href);
+      });
+
+      // type 인기글
+      const b = document.querySelectorAll('.title_area > a');
+      b.forEach(item => {
+        const viewWrap = item.closest('.view_wrap');
+        if (viewWrap) {
+          // .view_wrap 내부의 .user_box 요소 찾기
+          const userBox = viewWrap.querySelector('.user_box');
+
+          // .user_box 내부의 .user_box_inner 요소 찾기
+          const afterElement = userBox ? userBox.querySelector('.user_box_inner') : null;
+
+          // 결과 출력
+          results.push({type: 'popular', element: afterElement})
+        }
+        urls.push(item.href);
+      });
+
+      const c = document.querySelectorAll('.total_tit > a');
+      c.forEach(item => {
+        const totalWrap = item.closest('.total_wrap');
+        if (totalWrap) {
+          // .view_wrap 내부의 .user_box 요소 찾기
+          const totalTitGroup = totalWrap.querySelector('.total_tit_group');
+
+          // .user_box 내부의 .user_box_inner 요소 찾기
+          const afterElement = totalTitGroup ? totalTitGroup.querySelector('.source_box') : null;
+
+          // 결과 출력
+          results.push({type: 'website', element: afterElement})
+        }
+        urls.push(item.href);
+      });
+      
+      console.log(urls);
+      const items = await getAnalysisBlogInfo(urls)
+
+      for (const i in results) {
+        if (items[i]?.type) { // 값이 있을 경우만 실행
+          if (results[i].type === 'fds') {
+            if (items[i].type === '카페' || items[i].type === '홈페이지') {
+              const html = `<div style="font-size: 14px; margin-top: 2px; position: absolute; right: 0;"><strong>[${items[i].type}]</span>는 분석이 지원되지 않습니다</div>`;
+              results[i].element.insertAdjacentHTML('beforeend', html);
+            } else {
+              const html = `<div style="font-size: 14px; margin-top: 2px; position: absolute; right: 0;"><strong>[${items[i].type}]</strong> <span style="color:#55a13b">글자수</span> ${items[i].wordSpaceCount} <span style="color:#55a13b">이미지</span> ${items[i].imageCount} <span style="color:#55a13b">링크</span> ${items[i].linkCount}</div>`;
+              results[i].element.insertAdjacentHTML('beforeend', html);
+            }
+          } else if (results[i].type === 'popular') {
+            if (items[i].type === '카페' || items[i].type === '홈페이지') {
+              const html = `<div style="font-size: 14px; margin-top: 2px;"><strong>[${items[i].type}]</span>는 분석이 지원되지 않습니다</div>`;
+              results[i].element.insertAdjacentHTML('beforeend', html);
+            } else {
+              const html = `<div style="font-size: 14px; margin-top: 2px;"><strong>[${items[i].type}]</strong> <span style="color:#55a13b">글자수</span> ${items[i].wordSpaceCount} <span style="color:#55a13b">이미지</span> ${items[i].imageCount} <span style="color:#55a13b">링크</span> ${items[i].linkCount}</div>`;
+              results[i].element.insertAdjacentHTML('beforeend', html);
+            }
+          } else if (results[i].type === 'website') {
+            if (items[i].type === '카페' || items[i].type === '홈페이지') {
+              const html = `<div style="font-size: 14px;"><strong>[${items[i].type}]</span>는 분석이 지원되지 않습니다</div>`;
+              results[i].element.insertAdjacentHTML('beforeend', html);
+            } else {
+              const html = `<div style="font-size: 14px; position: absolute; right: 15px;"><strong>[${items[i].type}]</strong> <span style="color:#55a13b">글자수</span> ${items[i].wordSpaceCount} <span style="color:#55a13b">이미지</span> ${items[i].imageCount} <span style="color:#55a13b">링크</span> ${items[i].linkCount}</div>`;
+              results[i].element.insertAdjacentHTML('beforeend', html);
+            }
+          }          
+        }
+
+      }
+    }, 1)
+
   }
+
+
 };
 
 run();

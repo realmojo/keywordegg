@@ -119,9 +119,9 @@ const run = async () => {
           if (!afterElement) {
             afterElement = _keep_wrap ? _keep_wrap.querySelector('.fds-info-sub-inner-box') : null;
           }
+          console.log(afterElement);
           // 결과 출력
-          afterElement.
-          results.push({type: 'fds', element: afterElement })
+          results.push({ type: 'fds', element: afterElement });
         }
         urls.push(item.href);
       });
@@ -138,7 +138,7 @@ const run = async () => {
           const afterElement = userBox ? userBox.querySelector('.user_box_inner') : null;
 
           // 결과 출력
-          results.push({type: 'popular', element: afterElement})
+          results.push({ type: 'popular', element: afterElement });
         }
         urls.push(item.href);
       });
@@ -154,7 +154,7 @@ const run = async () => {
           const afterElement = totalTitGroup ? totalTitGroup.querySelector('.source_box') : null;
 
           // 결과 출력
-          results.push({type: 'website', element: afterElement})
+          results.push({ type: 'website', element: afterElement });
         }
         urls.push(item.href);
       });
@@ -182,7 +182,7 @@ const run = async () => {
             }
           } else if (results[i].type === 'website') {
             if (items[i].type === '카페' || items[i].type === '홈페이지') {
-              const html = `<div style="font-size: 14px;"><strong>[${items[i].type}]</span>는 분석이 지원되지 않습니다</div>`;
+              const html = `<div style="font-size: 14px; position: absolute; right: 15px;"><strong>[${items[i].type}]</span>는 분석이 지원되지 않습니다</div>`;
               results[i].element.insertAdjacentHTML('beforeend', html);
             } else {
               const html = `<div style="font-size: 14px; position: absolute; right: 15px;"><strong>[${items[i].type}]</strong> <span style="color:#55a13b">글자수</span> ${items[i].wordSpaceCount} <span style="color:#55a13b">이미지</span> ${items[i].imageCount} <span style="color:#55a13b">링크</span> ${items[i].linkCount}</div>`;
